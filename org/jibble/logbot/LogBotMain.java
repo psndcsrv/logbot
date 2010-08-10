@@ -90,6 +90,8 @@ public class LogBotMain {
             writer.newLine();
             writer.flush();
             writer.close();
+            
+            pidFile.deleteOnExit();
         } catch (Exception e) {
             System.err.println(e.getMessage());
             e.printStackTrace();
