@@ -1,0 +1,19 @@
+h1. Create web-based logs of IRC chat
+
+LogBot is an IRC bot that creates web-based logs in XHTML format. It uses the "PircBot":http://www.jibble.org/pircbot.php API to connect to an IRC server and create public logs for a channel. This is useful for disseminating online conferences and discussions of interest groups to those who do not use IRC.
+
+h2. Setting up the LogBot
+
+Place the contents of LogBot.zip in a new directory, preserving the directory structure. Edit config.ini to tell the bot which server to connect to, where to write the output, etc. The output directory will need to be on a web server that supports PHP scripts.
+
+h2. Running the LogBot
+
+You can now run the bot using run.bat or run.sh.
+
+The html directory contains PHP templates for the output. The bot will automatically copy these to the output directory when it starts up. You can change these if you wish to alter the appearance of your log files.
+
+The bot will automatically reconnect if it is disconnected from the IRC server. If this is not possible, it will keep retrying periodically. URLs in the logs will be highlighted and turned into hyperlinks. The log files themselves will be colored similar to mIRC, but you can change these colors and styles in the stylesheet if you wish.
+
+h2. Licensing
+
+This software product is OSI Certified Open Source Software, available under the GNU General Public License (GPL).
