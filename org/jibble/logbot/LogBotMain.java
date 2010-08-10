@@ -87,7 +87,6 @@ public class LogBotMain {
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(pidFile));
             writer.write(pid);
-            writer.newLine();
             writer.flush();
             writer.close();
             
