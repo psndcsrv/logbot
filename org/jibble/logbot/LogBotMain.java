@@ -74,14 +74,16 @@ public class LogBotMain {
     private static void writePidFile() {
         try {
             String pid = getProcessId();
-            if (pid == null) { throw new Exception("Cannot find current process id!"); }
+            if (pid == null) {
+                throw new Exception("Cannot find current process id!");
+            }
 
             File pidFile = new File(p.getProperty("PidFile", "./logbot.pid"));
             File parent = pidFile.getParentFile();
-            if (!parent.exists() && !parent.mkdirs()) { throw new Exception("Couldn't make parent folder (" + parent
-                    + ")"); }
+            if (!parent.exists() && !parent.mkdirs()) {
+                throw new Exception("Couldn't make parent folder (" + parent + ")");
+            }
             pidFile.createNewFile();
-            if (!pidFile.isDirectory()) { throw new Exception("Cannot make pid file (" + pidFile + ")"); }
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(pidFile));
             writer.write(pid);
