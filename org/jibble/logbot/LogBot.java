@@ -59,7 +59,8 @@ public class LogBot extends PircBot {
     }
     
     public void onJoin(String channel, String sender, String login, String hostname) {
-        append(GREEN, "* " + sender + " (" + login + "@" + hostname + ") has joined " + channel);
+        // append(GREEN, "* " + sender + " (" + login + "@" + hostname + ") has joined " + channel);
+        append(GREEN, "* " + sender + " has joined " + channel);
         if (sender.equals(getNick())) {
             sendNotice(channel, joinMessage);
         }
@@ -90,7 +91,7 @@ public class LogBot extends PircBot {
     }
     
     public void onPart(String channel, String sender, String login, String hostname) {
-        append(GREEN, "* " + sender + " (" + login + "@" + hostname + ") has left " + channel);
+        append(GREEN, "* " + sender + " has left " + channel);
     }
     
     public void onPing(String sourceNick, String sourceLogin, String sourceHostname, String target, String pingValue) {
@@ -102,7 +103,7 @@ public class LogBot extends PircBot {
     }
     
     public void onQuit(String sourceNick, String sourceLogin, String sourceHostname, String reason) {
-        append(NAVY, "* " + sourceNick + " (" + sourceLogin + "@" + sourceHostname + ") Quit (" + reason + ")");
+        append(NAVY, "* " + sourceNick + " Quit (" + reason + ")");
     }
     
     public void onTime(String sourceNick, String sourceLogin, String sourceHostname, String target) {
