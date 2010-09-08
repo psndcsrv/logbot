@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +19,7 @@ public class LogBotMain {
     private static String nick;
     private static String joinMessage;
     private static File outDir;
+    private static String controlPassword;
 
     public static void main(String[] args) throws Exception {
         p = new Properties();
@@ -27,43 +29,14 @@ public class LogBotMain {
         channel = p.getProperty("Channel", "#test");
         nick = p.getProperty("Nick", "LogBot");
         joinMessage = p.getProperty("JoinMessage", "This channel is logged.");
+        outDir = new File(p.getProperty("OutputDir", "./output/"));
+        controlPassword = p.getProperty("ControlPassword", UUID.randomUUID().toString());
 
-        setupOutputDir();
         writePidFile();
 
-        LogBot bot = new LogBot(nick, outDir, joinMessage);
+        LogBot bot = new LogBot(nick, outDir, joinMessage, controlPassword);
         bot.connect(server);
-        bot.joinChannel(channel);
-    }
-
-    private static void setupOutputDir() throws Exception {
-        outDir = new File(p.getProperty("OutputDir", "./output/"));
-        outDir.mkdirs();
-        if (!outDir.isDirectory()) {
-            System.err.println("Cannot make output directory (" + outDir + ")");
-            System.exit(1);
-        }
-
-        LogBot.copy(new File("html/header.inc.php"), new File(outDir, "header.inc.php"));
-        LogBot.copy(new File("html/footer.inc.php"), new File(outDir, "footer.inc.php"));
-        LogBot.copy(new File("html/index.php"), new File(outDir, "index.php"));
-
-        writeConfigPhp();
-    }
-
-    private static void writeConfigPhp() throws Exception {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outDir, "config.inc.php")));
-        writer.write("<?php");
-        writer.newLine();
-        writer.write("    $server = \"" + server + "\";");
-        writer.newLine();
-        writer.write("    $channel = \"" + channel + "\";");
-        writer.newLine();
-        writer.write("    $nick = \"" + nick + "\";");
-        writer.newLine();
-        writer.write("?>");
-        writer.flush();
-        writer.close();
+        bot.join(channel);
     }
 
     /**
