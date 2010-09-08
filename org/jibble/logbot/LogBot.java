@@ -33,9 +33,6 @@ public class LogBot extends PircBot {
     public static final String BRICK = "irc-brick";
     public static final String RED = "irc-red";
     
-    private String channel;
-    private String server;
-    private String nick;
     private String joinMessage;
     
     private File baseOutDir;
@@ -80,7 +77,7 @@ public class LogBot extends PircBot {
         }
 
         try {
-            writeConfigPhp(outDir);
+            writeConfigPhp(outDir, channel);
         } catch (IOException e) {
             logger.warning("Couldn't write necessary php config file to output directory (" + outDir + ")");
             return false;
@@ -96,15 +93,15 @@ public class LogBot extends PircBot {
         return channel;
     }
 
-    private void writeConfigPhp(File outDir) throws IOException {
+    private void writeConfigPhp(File outDir, String channel) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(new File(outDir, "config.inc.php")));
         writer.write("<?php");
         writer.newLine();
-        writer.write("    $server = \"" + server + "\";");
+        writer.write("    $server = \"" + getServer() + "\";");
         writer.newLine();
-        writer.write("    $channel = \"" + channel + "\";");
+        writer.write("    $channel = \"#" + channel + "\";");
         writer.newLine();
-        writer.write("    $nick = \"" + nick + "\";");
+        writer.write("    $nick = \"" + getNick() + "\";");
         writer.newLine();
         writer.write("?>");
         writer.flush();
@@ -212,7 +209,8 @@ public class LogBot extends PircBot {
     
     @Override
     public void onNickChange(String oldNick, String login, String hostname, String newNick) {
-        append(GREEN, "* " + oldNick + " is now known as " + newNick, channel);
+        // TODO it would be nice to figure out which channels this person is on and only log to those channels
+        append(GREEN, "* " + oldNick + " is now known as " + newNick, ALL_CHANNELS);
     }
     
     @Override
